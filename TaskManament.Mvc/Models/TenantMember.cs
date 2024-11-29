@@ -10,7 +10,7 @@ namespace TaskManament.Mvc.Models
         public Tenant Tenant { get; set; } = null!;
         public ApplicationUser User { get; set; } = null!;
 
-        public void Configure(EntityTypeBuilder<TenantMember> builder)
+        public static void Configure(EntityTypeBuilder<TenantMember> builder)
         {
             builder.HasKey(e => new { e.TenantId, e.UserId });
             builder.HasOne(e => e.Tenant).WithMany().HasForeignKey(e => e.TenantId);

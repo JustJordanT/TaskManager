@@ -19,10 +19,15 @@ namespace TaskManament.Mvc.Services
             {
                 Console.WriteLine($"Type: {claim.Type} Value: {claim.Value}");
             }
+
+            var userId = principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value
+                          ?? throw new ArgumentNullException(nameof(principal), "User ID claim is missing.");
             
-            var userId = principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-            var displayName = principal.FindFirst("name")?.Value;
-            var email = principal.FindFirst("preferred_username")?.Value;
+            var displayName = principal.FindFirst("name")?.Value
+                              ?? throw new ArgumentNullException(nameof(principal), "Display name claim is missing.");
+            
+            var email = principal.FindFirst("preferred_username")?.Value
+                        ?? throw new ArgumentNullException(nameof(principal), "Email claim is missing.");
 
             var user = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.EntraID == userId, cancellationToken: token);
 

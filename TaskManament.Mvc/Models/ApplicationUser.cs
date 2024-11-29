@@ -10,6 +10,7 @@ namespace TaskManament.Mvc.Models
         public string EntraID { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        //public bool FirstTimeLogin { get; set; } = true;
 
         public static void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
