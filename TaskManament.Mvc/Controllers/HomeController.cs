@@ -1,20 +1,26 @@
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using TaskManament.Mvc.Models;
+using TaskManament.Mvc.Services;
 
 namespace TaskManament.Mvc.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
+        private readonly ApplicationUserService _applicationUserService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationUserService applicationUserService, ILogger<HomeController> logger)
         {
+            _applicationUserService = applicationUserService;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
+            await _applicationUserService.CaptureApplicationUser(User, new CancellationToken());
             return View();
         }
 

@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{449A9EE3-DA12-4511-90C7-E87C0C6BB81A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		README.md = README.md
 		schema.sql = schema.sql
 	EndProjectSection
 EndProject

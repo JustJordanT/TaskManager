@@ -1,4 +1,6 @@
-﻿namespace TaskManament.Mvc.Models
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace TaskManament.Mvc.Models
 {
     public class ApplicationUser
     {
@@ -8,5 +10,15 @@
         public string EntraID { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+
+        public static void Configure(EntityTypeBuilder<ApplicationUser> builder)
+        {
+            builder.HasKey(e => e.Id);
+            builder.Property(e => e.TenantId).IsRequired();
+            builder.Property(e => e.EntraID).IsRequired();
+            builder.Property(e => e.DisplayName).IsRequired();
+            builder.Property(e => e.Email).IsRequired();
+        }
     }
 }
+
