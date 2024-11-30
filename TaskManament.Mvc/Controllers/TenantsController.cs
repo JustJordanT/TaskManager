@@ -10,8 +10,8 @@ namespace TaskManament.Mvc.Controllers
     [Authorize]
     public class TenantsController : Controller
     {
-        public TenantService _tenantService;
-        public TenantsController(TenantService tenantService) => _tenantService = tenantService;
+        public ITenantService _tenantService;
+        public TenantsController(ITenantService tenantService) => _tenantService = tenantService;
 
 
         // GET: TenantController
