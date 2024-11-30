@@ -1,0 +1,21 @@
+﻿@using System.Security.Claims
+@using TaskManament.Mvc.Services
+@inject ITenantService TenantService
+
+@{
+    ClaimsPrincipal principal = User as ClaimsPrincipal;
+    var email = principal.FindFirst("preferred_username")?.Value
+                        ?? throw new ArgumentNullException(nameof(principal), "Email claim is missing.");
+    // var userId = await ApplicationUserService.GetApplicationUserByEmail(email, new CancellationToken());
+    // var tenantMembers = await TenantMemberService.GetTenantMembersByUserIdAsync(userId, CancellationToken.None);
+    var tenants = await TenantService.GetTenantsByEmailAsync(email, new CancellationToken());
+}
+
+<ul class="dropdown-menu">
+    @foreach (var tenant in tenants)
+    {
+        <li><a class="dropdown-item" asp-area="" asp-controller="Tenants" asp-route-tenant="@tenant.Id">@tenant.TenantDescription</a></li>
+    }
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#">Create Tenant</a></li>
+</ul>

@@ -6,7 +6,6 @@ namespace TaskManament.Mvc.Models
     {
         // Could be some edge cases where EntraID is updated but this is not updated.
         public int Id { get; set; }
-        public int TenantId { get; set; }
         public string EntraID { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -15,7 +14,6 @@ namespace TaskManament.Mvc.Models
         public static void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.TenantId).IsRequired();
             builder.Property(e => e.EntraID).IsRequired();
             builder.Property(e => e.DisplayName).IsRequired();
             builder.Property(e => e.Email).IsRequired();

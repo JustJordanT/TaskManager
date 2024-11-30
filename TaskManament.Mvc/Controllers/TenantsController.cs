@@ -48,7 +48,7 @@ namespace TaskManament.Mvc.Controllers
                     Date_Modified = DateTime.Now
                 };
 
-                await _tenantService.CreateTenantAsync(tenant);
+                await _tenantService.CreateTenantAsync(tenant, User, new CancellationToken());
 
                 return RedirectToAction(nameof(Index));
             }

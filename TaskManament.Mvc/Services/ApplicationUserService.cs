@@ -13,13 +13,7 @@ namespace TaskManament.Mvc.Services
 
         public async Task<ApplicationUser> CaptureApplicationUser(ClaimsPrincipal principal, CancellationToken token)
         {
-            // cw out the cliam types
             var claims = principal.Claims;
-            foreach (var claim in claims)
-            {
-                Console.WriteLine($"Type: {claim.Type} Value: {claim.Value}");
-            }
-
             var userId = principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value
                           ?? throw new ArgumentNullException(nameof(principal), "User ID claim is missing.");
             
@@ -45,6 +39,20 @@ namespace TaskManament.Mvc.Services
             }
 
             return user;
+        }
+
+        public async Task<int> GetApplicationUserByEmail(string email, CancellationToken token)
+        {
+            try { 
+            
+            var user = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Email == email, cancellationToken: token);
+            return user.Id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return 0;
         }
     }
 }

@@ -1,16 +1,22 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using TaskManament.Mvc.Data;
+using TaskManament.Mvc.Models;
 using TaskManament.Mvc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<ITenantMemberService, TenantMemberService>(); // Register ITenantMemberService
+builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>(); // Register IApplicationUserService
 builder.Services.AddScoped<ApplicationUserService>();
-builder.Services.AddScoped<TenantService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+
 
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
