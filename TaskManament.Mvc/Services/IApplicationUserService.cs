@@ -7,6 +7,10 @@ namespace TaskManament.Mvc.Services
     {
 
         public Task<ApplicationUser> CaptureApplicationUser(ClaimsPrincipal principal, CancellationToken token);
-        public Task<int> GetApplicationUserByEmail(string email, CancellationToken token);
+        public Task<int> GetApplicationUserIdByEmail(string email, CancellationToken token);
+
+        public Task<bool> SetApplicationUserDefatulTenant(int tenantId, string email, CancellationToken token);
+
+        public int GetDefaultTenant(string email, CancellationToken token);
     }
 }

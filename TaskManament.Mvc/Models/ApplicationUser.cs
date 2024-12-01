@@ -9,6 +9,7 @@ namespace TaskManament.Mvc.Models
         public string EntraID { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public int DefaultTenant { get; set; } = 0;
         //public bool FirstTimeLogin { get; set; } = true;
 
         public static void Configure(EntityTypeBuilder<ApplicationUser> builder)
@@ -17,6 +18,7 @@ namespace TaskManament.Mvc.Models
             builder.Property(e => e.EntraID).IsRequired();
             builder.Property(e => e.DisplayName).IsRequired();
             builder.Property(e => e.Email).IsRequired();
+            builder.Property(e => e.DefaultTenant).IsRequired();
         }
     }
 }

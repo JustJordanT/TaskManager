@@ -30,7 +30,7 @@ namespace TaskManament.Mvc.Services
 
             Console.WriteLine($"User Email: {email}");
 
-            var userId = await _applicationUserService.GetApplicationUserByEmail(email, token);
+            var userId = await _applicationUserService.GetApplicationUserIdByEmail(email, token);
 
             Console.WriteLine($"UserID: {userId}");
 
@@ -51,7 +51,7 @@ namespace TaskManament.Mvc.Services
         {
             var tenants = new List<Tenant>();
 
-            var userId = await _applicationUserService.GetApplicationUserByEmail(email, token);
+            var userId = await _applicationUserService.GetApplicationUserIdByEmail(email, token);
 
             var tenantMembers = await _tenantMemberService.GetTenantMembersByUserIdAsync(userId, token);
 

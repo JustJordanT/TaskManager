@@ -41,7 +41,7 @@ namespace TaskManament.Mvc.Services
             return user;
         }
 
-        public async Task<int> GetApplicationUserByEmail(string email, CancellationToken token)
+        public async Task<int> GetApplicationUserIdByEmail(string email, CancellationToken token)
         {
             try { 
             
@@ -53,6 +53,24 @@ namespace TaskManament.Mvc.Services
                 Console.WriteLine(ex.Message);
             }
             return 0;
+        }
+
+        public int GetDefaultTenant(string email, CancellationToken token)
+        {
+            int tenantId = _context.ApplicationUser.FirstOrDefault(u => u.Email == email).DefaultTenant;
+            return tenantId;
+        }
+
+        public async Task<bool> SetApplicationUserDefatulTenant(int tenantId, string email, CancellationToken token)
+        {
+            var userId = await GetApplicationUserIdByEmail(email, token);
+            var user = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Id == userId, token);
+            if (user != null)
+            {
+                user.DefaultTenant = tenantId;
+                await _context.SaveChangesAsync(token);
+            }
+            return true;
         }
     }
 }

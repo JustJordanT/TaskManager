@@ -1,28 +1,36 @@
 ﻿@using System.Security.Claims
 @using TaskManament.Mvc.Services
 @inject ITenantService TenantService
+@inject IApplicationUserService ApplicationUserService
 
 @{
     ClaimsPrincipal principal = User as ClaimsPrincipal;
     var email = principal.FindFirst("preferred_username")?.Value
                         ?? throw new ArgumentNullException(nameof(principal), "Email claim is missing.");
     var tenants = await TenantService.GetTenantsByEmailAsync(email, new CancellationToken());
+    var defaultTenantId = ApplicationUserService.GetDefaultTenant(email, new CancellationToken());
+    var defaultTenant = tenants.FirstOrDefault(t => t.Id == defaultTenantId).TenantDescription;
     // TODO: May want to add a default Tenant into the schema.
 }
 
 <div class="btn-group me-4">
-    <button type="button" class="btn btn-primary">Current Tenant</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='/tenants'">@defaultTenant 🏢</button>
     <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
         <span class="visually-hidden">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
-
         @foreach (var tenant in tenants)
         {
-            <li><a class="dropdown-item" asp-area="" asp-controller="Tenants" asp-route-tenant="@tenant.Id">@tenant.TenantDescription</a></li>
+            <li>
+                <form method="post" asp-controller="Tenants" asp-action="SetDefaultTenant">
+                    <input type="hidden" name="tenantId" value="@tenant.Id" />
+                    <input type="hidden" name="email" value="@email" />
+                    <input type="hidden" name="token" value="@{new CancellationToken();}" />
+                    <button type="submit" class="dropdown-item">@tenant.TenantDescription</button>
+                </form>
+            </li>
         }
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="/Tenants/Create">Create Tenant</a></li>
     </ul>
 </div>
-

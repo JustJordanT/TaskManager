@@ -11,7 +11,12 @@ namespace TaskManament.Mvc.Controllers
     public class TenantsController : Controller
     {
         public ITenantService _tenantService;
-        public TenantsController(ITenantService tenantService) => _tenantService = tenantService;
+        public IApplicationUserService _applicationUserService;
+        public TenantsController(ITenantService tenantService, IApplicationUserService applicationUserService)
+        {
+            _applicationUserService = applicationUserService;
+            _tenantService = tenantService;
+        }
 
 
         // GET: TenantController
@@ -56,6 +61,18 @@ namespace TaskManament.Mvc.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetDefaultTenant(int tenantId, string email, CancellationToken token)
+        {
+            if (email == null)
+            {
+                return Unauthorized();
+            }
+
+            await _applicationUserService.SetApplicationUserDefatulTenant(tenantId, email, token);
+            return RedirectToAction("Index", "Home");
         }
     }
 }
